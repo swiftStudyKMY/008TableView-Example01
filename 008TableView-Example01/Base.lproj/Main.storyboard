@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Cmv-BA-bJu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YWv-pe-F4O">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--List View Controller-->
+        <!--영화정보-->
         <scene sceneID="fgl-4f-DZJ">
             <objects>
                 <tableViewController id="Cmv-BA-bJu" customClass="ListViewController" customModule="_08TableView_Example01" customModuleProvider="target" sceneMemberID="viewController">
@@ -14,6 +14,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="cdh-E4-MBq">
+                            <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ListCell" textLabel="SvK-wq-nzW" style="IBUITableViewCellStyleDefault" id="Xn9-1l-E7b">
                                 <rect key="frame" x="0.0" y="28" width="375" height="43.5"/>
@@ -38,10 +43,29 @@
                             <outlet property="delegate" destination="Cmv-BA-bJu" id="SO9-gu-dJW"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="영화정보" id="rcc-zN-KYk"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u1M-5H-aCO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="180" y="8"/>
+            <point key="canvasLocation" x="1119.2" y="7.6461769115442282"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="tzp-VU-Ov6">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YWv-pe-F4O" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="cgs-40-0OM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Cmv-BA-bJu" kind="relationship" relationship="rootViewController" id="lmG-Ec-3Ou"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Xs-Ij-IIm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="180" y="7.6461769115442282"/>
         </scene>
     </scenes>
 </document>
