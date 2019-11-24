@@ -50,9 +50,23 @@ class ListViewController:UITableViewController{
         // return value type [UITableViewCell?]
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell")!
         
-        cell.textLabel?.text = row.title
+//        cell.textLabel?.text = row.title
+//
+//        cell.detailTextLabel?.text = row.description
         
-        cell.detailTextLabel?.text = row.description
+        
+        //1. viewWithTag tag 값을 참조하여 UIView 객체 값을 가져오기
+        //2. UIview 객체로 가져와서 UILabel로 downCast
+        //3. ?(optional)을 통해 입력되지 않을 태그값을 호출하는 경우 대비
+        let title = cell.viewWithTag(101) as? UILabel
+        let desc = cell.viewWithTag(102) as? UILabel
+        let opendate = cell.viewWithTag(103) as? UILabel
+        let rating = cell.viewWithTag(104) as? UILabel
+        
+        title?.text = row.title
+        desc?.text = row.description
+        opendate?.text = row.opendate
+        rating?.text = "\(row.rating!)"
         
         return cell
     }
