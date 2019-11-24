@@ -52,6 +52,8 @@ class ListViewController:UITableViewController{
         
         cell.textLabel?.text = row.title
         
+        cell.detailTextLabel?.text = row.description
+        
         return cell
     }
 //MARK:사용자가 셀 선택시 콜백
