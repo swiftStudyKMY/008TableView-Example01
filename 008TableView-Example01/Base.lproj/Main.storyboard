@@ -20,7 +20,7 @@
                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ListCell" rowHeight="80" id="Xn9-1l-E7b">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ListCell" rowHeight="80" id="Xn9-1l-E7b" customClass="MovieCell" customModule="_08TableView_Example01" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Xn9-1l-E7b" id="3zN-TQ-59i">
@@ -57,6 +57,12 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="desc" destination="SB3-qg-d52" id="LzO-z7-YAw"/>
+                                    <outlet property="opendate" destination="I2C-cf-kdf" id="iOS-Xu-UaX"/>
+                                    <outlet property="rating" destination="yLV-Oa-ZAc" id="a97-PM-dOJ"/>
+                                    <outlet property="title" destination="E13-KU-NGm" id="JOS-pH-Mh2"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

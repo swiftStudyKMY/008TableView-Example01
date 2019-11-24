@@ -48,26 +48,39 @@ class ListViewController:UITableViewController{
         let row = self.list[indexPath.row]
         
         // return value type [UITableViewCell?]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell")!
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell")!
+
+        /*
+            Basic 및 subtitle
+            cell.textLabel?.text = row.title
+            cell.detailTextLabel?.text = row.description
+        */
         
-//        cell.textLabel?.text = row.title
-//
-//        cell.detailTextLabel?.text = row.description
+        /*
+            CustomCell
+            //1. viewWithTag tag 값을 참조하여 UIView 객체 값을 가져오기
+            //2. UIview 객체로 가져와서 UILabel로 downCast
+            //3. ?(optional)을 통해 입력되지 않을 태그값을 호출하는 경우 대비
+            let title = cell.viewWithTag(101) as? UILabel
+            let desc = cell.viewWithTag(102) as? UILabel
+            let opendate = cell.viewWithTag(103) as? UILabel
+            let rating = cell.viewWithTag(104) as? UILabel
+            
+            
+            title?.text = row.title
+            desc?.text = row.description
+            opendate?.text = row.opendate
+            rating?.text = "\(row.rating!)"
+        */
         
-        
-        //1. viewWithTag tag 값을 참조하여 UIView 객체 값을 가져오기
-        //2. UIview 객체로 가져와서 UILabel로 downCast
-        //3. ?(optional)을 통해 입력되지 않을 태그값을 호출하는 경우 대비
-        let title = cell.viewWithTag(101) as? UILabel
-        let desc = cell.viewWithTag(102) as? UILabel
-        let opendate = cell.viewWithTag(103) as? UILabel
-        let rating = cell.viewWithTag(104) as? UILabel
-        
-        title?.text = row.title
-        desc?.text = row.description
-        opendate?.text = row.opendate
-        rating?.text = "\(row.rating!)"
-        
+        //UITableViewCell(MovieCell.swift)을 이용한 ListCell 할당
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell") as! MovieCell
+               
+        cell.title?.text = row.title
+        cell.desc?.text = row.description
+        cell.opendate?.text = row.opendate
+        cell.rating?.text = "\(row.rating!)"
+ 
         return cell
     }
 //MARK:사용자가 셀 선택시 콜백
