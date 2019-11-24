@@ -14,21 +14,22 @@ class ListViewController:UITableViewController{
 //    var list = [MovieVO]( );
     
     var dataset = [
-        ("다크나이트1","영웅 다크나이트 영웅 다크나이트1","1989-04-03",7.75),
-        ("다크나이트2","영웅 다크나이트 영웅 다크나이트2","1989-04-04",7.76),
-        ("다크나이트3","영웅 다크나이트 영웅 다크나이트3","1989-04-05",7.77)
+        ("다크나이트1","영웅 다크나이트 영웅 다크나이트1","1989-04-03",7.75, "img1.jpeg"),
+        ("다크나이트2","영웅 다크나이트 영웅 다크나이트2","1989-04-04",7.76, "img1.jpeg"),
+        ("다크나이트3","영웅 다크나이트 영웅 다크나이트3","1989-04-05",7.77, "img1.jpeg")
     ]
     
     lazy var list: [MovieVO] = {
         var datalist = [MovieVO]()
         
-        for (title,desc,opendate,rating) in self.dataset{
+        for (title,desc,opendate,rating,thumbnail) in self.dataset{
             let mvo = MovieVO()
             
             mvo.title = title
             mvo.description = desc
             mvo.opendate = opendate
             mvo.rating = rating
+            mvo.thumbnail = thumbnail
             
             datalist.append(mvo)
         }
@@ -80,7 +81,8 @@ class ListViewController:UITableViewController{
         cell.desc?.text = row.description
         cell.opendate?.text = row.opendate
         cell.rating?.text = "\(row.rating!)"
- 
+        cell.thumbnail.image = UIImage(named: row.thumbnail!)
+        
         return cell
     }
 //MARK:사용자가 셀 선택시 콜백
