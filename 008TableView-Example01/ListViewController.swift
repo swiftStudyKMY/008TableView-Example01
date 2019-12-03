@@ -10,33 +10,65 @@ import Foundation
 import UIKit
 
 class ListViewController:UITableViewController{
-    
-//    var list = [MovieVO]( );
-    
-//    var dataset = [
-//        ("다크나이트1","영웅 다크나이트 영웅 다크나이트1","1989-04-03",7.75, "img1.jpeg"),
-//        ("다크나이트2","영웅 다크나이트 영웅 다크나이트2","1989-04-04",7.76, "img1.jpeg"),
-//        ("다크나이트3","영웅 다크나이트 영웅 다크나이트3","1989-04-05",7.77, "img1.jpeg")
-//    ]
-    
+
+    var page = 1
+
     lazy var list: [MovieVO] = {
         var datalist = [MovieVO]()
-        
-//        for (title,desc,opendate,rating,thumbnail) in self.dataset{
-//            let mvo = MovieVO()
-//
-//            mvo.title = title
-//            mvo.description = desc
-//            mvo.opendate = opendate
-//            mvo.rating = rating
-//            mvo.thumbnail = thumbnail
-//
-//            datalist.append(mvo)
-//        }
-        
         return datalist
         
     }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("viewDidLoad call")
+        self.callAPI()
+    }
+    
+    @IBAction func more(_ sender: Any) {
+        self.page += 1
+        
+        self.callAPI()
+        
+        self.tableView.reloadData()
+        
+    }
+    
+    func callAPI() {
+        let url = "http://swiftapi.rubypaper.co.kr:2029/hoppin/movies?version=1&page=\(self.page)&count=10&genreId=&order=releasedateasc"
+        
+        let apiURI :URL! = URL(string: url)
+        
+        let apidata = try! Data(contentsOf: apiURI)
+        
+        let log = NSString(data:apidata, encoding: String.Encoding.utf8.rawValue) ?? "데이터가 없습니다."
+        NSLog("API Res = \(log)")
+        do {
+         //json객체를 파싱하고 NSDictionary로 변환
+            let apiDic = try JSONSerialization.jsonObject(with: apidata, options: []) as! NSDictionary
+            
+            let hoppin = apiDic["hoppin"] as! NSDictionary
+            let movies = hoppin["movies"] as! NSDictionary
+            let movie = movies["movie"] as! NSArray
+            
+            for row in movie{
+                let r  = row as! NSDictionary
+                
+                let mvo = MovieVO()
+             
+             mvo.title       = r["title"] as? String
+             mvo.description = r["genreNames"] as? String
+             mvo.thumbnail   = r["thumbnailImage"] as? String
+             mvo.detail      = r["linkUrl"] as? String
+             mvo.rating      = (r["ratingAverage"] as! NSString).doubleValue
+             
+             self.list.append(mvo)
+             
+            }
+            
+        }catch{}
+    }
+    
     
 //MARK:생성할 목록의 길이 반환
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -99,68 +131,5 @@ class ListViewController:UITableViewController{
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog("didSelectRowAt call")
         NSLog("select row is \(indexPath.row) 번째 행입니다.") 
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print("viewDidLoad call")
-
-//        하드코딩으로 인한 주석처리
-//        var mvo = MovieVO( )
-//        mvo.title = "다크나이트1"
-//        mvo.description = "영웅 다크나이트 영웅 다크나이트1"
-//        mvo.opendate = "1989-04-03"
-//        mvo.rating = 7.39
-//
-//        self.list.append(mvo)
-//
-//        mvo = MovieVO( )
-//        mvo.title = "다크나이트2"
-//        mvo.description = "영웅 다크나이트 영웅 다크나이트2"
-//        mvo.opendate = "1989-04-04"
-//        mvo.rating = 7.38
-//
-//        self.list.append(mvo)
-//
-//        mvo = MovieVO( )
-//        mvo.title = "다크나이트3"
-//        mvo.description = "영웅 다크나이트 영웅 다크나이트3"
-//        mvo.opendate = "1989-04-05"
-//        mvo.rating = 7.40
-//
-//        self.list.append(mvo)
-        
-        let url = "http://swiftapi.rubypaper.co.kr:2029/hoppin/movies?version=1&page=1&count=10&genreId=&order=releasedateasc"
-               
-               let apiURI :URL! = URL(string: url)
-               
-               let apidata = try! Data(contentsOf: apiURI)
-               
-               let log = NSString(data:apidata, encoding: String.Encoding.utf8.rawValue) ?? ""
-               NSLog("API Res = \(log)")
-               do {
-                //json객체를 파싱하고 NSDictionary로 변환
-                   let apiDic = try JSONSerialization.jsonObject(with: apidata, options: []) as! NSDictionary
-                   
-                   let hoppin = apiDic["hoppin"] as! NSDictionary
-                   let movies = hoppin["movies"] as! NSDictionary
-                   let movie = movies["movie"] as! NSArray
-                   
-                   for row in movie{
-                       let r  = row as! NSDictionary
-                       
-                       let mvo = MovieVO()
-                    
-                    mvo.title       = r["title"] as? String
-                    mvo.description = r["genreNames"] as? String
-                    mvo.thumbnail   = r["thumbnailImage"] as? String
-                    mvo.detail      = r["linkUrl"] as? String
-                    mvo.rating      = (r["ratingAverage"] as! NSString).doubleValue
-                    
-                    self.list.append(mvo)
-                    
-                   }
-                   
-               }catch{}
     }
 }
