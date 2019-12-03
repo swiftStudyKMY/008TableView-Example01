@@ -13,26 +13,26 @@ class ListViewController:UITableViewController{
     
 //    var list = [MovieVO]( );
     
-    var dataset = [
-        ("다크나이트1","영웅 다크나이트 영웅 다크나이트1","1989-04-03",7.75, "img1.jpeg"),
-        ("다크나이트2","영웅 다크나이트 영웅 다크나이트2","1989-04-04",7.76, "img1.jpeg"),
-        ("다크나이트3","영웅 다크나이트 영웅 다크나이트3","1989-04-05",7.77, "img1.jpeg")
-    ]
+//    var dataset = [
+//        ("다크나이트1","영웅 다크나이트 영웅 다크나이트1","1989-04-03",7.75, "img1.jpeg"),
+//        ("다크나이트2","영웅 다크나이트 영웅 다크나이트2","1989-04-04",7.76, "img1.jpeg"),
+//        ("다크나이트3","영웅 다크나이트 영웅 다크나이트3","1989-04-05",7.77, "img1.jpeg")
+//    ]
     
     lazy var list: [MovieVO] = {
         var datalist = [MovieVO]()
         
-        for (title,desc,opendate,rating,thumbnail) in self.dataset{
-            let mvo = MovieVO()
-            
-            mvo.title = title
-            mvo.description = desc
-            mvo.opendate = opendate
-            mvo.rating = rating
-            mvo.thumbnail = thumbnail
-            
-            datalist.append(mvo)
-        }
+//        for (title,desc,opendate,rating,thumbnail) in self.dataset{
+//            let mvo = MovieVO()
+//
+//            mvo.title = title
+//            mvo.description = desc
+//            mvo.opendate = opendate
+//            mvo.rating = rating
+//            mvo.thumbnail = thumbnail
+//
+//            datalist.append(mvo)
+//        }
         
         return datalist
         
@@ -90,6 +90,7 @@ class ListViewController:UITableViewController{
         NSLog("didSelectRowAt call")
         NSLog("select row is \(indexPath.row) 번째 행입니다.") 
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad call")
@@ -119,6 +120,36 @@ class ListViewController:UITableViewController{
 //
 //        self.list.append(mvo)
         
+        let url = "http://swiftapi.rubypaper.co.kr:2029/hoppin/movies?version=1&page=1&count=10&genreId=&order=releasedateasc"
+               
+               let apiURI :URL! = URL(string: url)
+               
+               let apidata = try! Data(contentsOf: apiURI)
+               
+               let log = NSString(data:apidata, encoding: String.Encoding.utf8.rawValue) ?? ""
+               NSLog("API Res = \(log)")
+               do {
+                   let apiDic = try JSONSerialization.jsonObject(with: apidata, options: []) as! NSDictionary
+                   
+                   let hoppin = apiDic["hoppin"] as! NSDictionary
+                   let movies = hoppin["movies"] as! NSDictionary
+                   let movie = movies["movie"] as! NSArray
+                   
+                   for row in movie{
+                       let r  = row as! NSDictionary
+                       
+                       let mvo = MovieVO()
+                    
+                    mvo.title       = r["title"] as? String
+                    mvo.description = r["genreNames"] as? String
+                    mvo.thumbnail   = r["thumbnailImage"] as? String
+                    mvo.detail      = r["linkUrl"] as? String
+                    mvo.rating      = (r["ratingAverage"] as! NSString).doubleValue
+                    
+                    self.list.append(mvo)
+                    
+                   }
+                   
+               }catch{}
     }
-    
 }
