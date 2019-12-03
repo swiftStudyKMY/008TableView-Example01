@@ -81,7 +81,17 @@ class ListViewController:UITableViewController{
         cell.desc?.text = row.description
         cell.opendate?.text = row.opendate
         cell.rating?.text = "\(row.rating!)"
-        cell.thumbnail.image = UIImage(named: row.thumbnail!)
+//        cell.thumbnail.image = UIImage(named: row.thumbnail!)
+        
+        //1. thumbnail 경로를 URL 객체로 생성
+        let url : URL! = URL(string: row.thumbnail!)
+        //2. img를 Data로 저장
+        let imgData = try! Data(contentsOf: url)
+        //3. UIImage에 대입
+        cell.thumbnail.image = UIImage(data:imgData)
+        //4. 한줄처리
+        //cell.thumbnail.image = UIImage(data:try! Data(contentsOf: URL(string: row.thumbnail!)!))
+        
         
         return cell
     }
@@ -129,6 +139,7 @@ class ListViewController:UITableViewController{
                let log = NSString(data:apidata, encoding: String.Encoding.utf8.rawValue) ?? ""
                NSLog("API Res = \(log)")
                do {
+                //json객체를 파싱하고 NSDictionary로 변환
                    let apiDic = try JSONSerialization.jsonObject(with: apidata, options: []) as! NSDictionary
                    
                    let hoppin = apiDic["hoppin"] as! NSDictionary
