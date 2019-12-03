@@ -18,6 +18,7 @@ class ListViewController:UITableViewController{
         return datalist
         
     }()
+    @IBOutlet var moreBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +52,8 @@ class ListViewController:UITableViewController{
             let movies = hoppin["movies"] as! NSDictionary
             let movie = movies["movie"] as! NSArray
             
+            let totCnt = (hoppin["totalCount"] as? NSString)!.intValue
+            
             for row in movie{
                 let r  = row as! NSDictionary
                 
@@ -63,6 +66,10 @@ class ListViewController:UITableViewController{
              mvo.rating      = (r["ratingAverage"] as! NSString).doubleValue
              
              self.list.append(mvo)
+                
+                if(self.list.count >= totCnt){
+                    self.moreBtn.isHidden = true
+                }
              
             }
             
