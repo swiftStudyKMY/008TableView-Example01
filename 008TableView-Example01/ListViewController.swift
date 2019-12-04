@@ -34,7 +34,7 @@ class ListViewController:UITableViewController{
         self.tableView.reloadData()
         
     }
-    
+
     func callAPI() {
         let url = "http://swiftapi.rubypaper.co.kr:2029/hoppin/movies?version=1&page=\(self.page)&count=10&genreId=&order=releasedateasc"
         
@@ -65,6 +65,10 @@ class ListViewController:UITableViewController{
              mvo.detail      = r["linkUrl"] as? String
              mvo.rating      = (r["ratingAverage"] as! NSString).doubleValue
              
+                let url :URL! = URL(string: mvo.thumbnail!)
+                let imgData = try! Data(contentsOf: url)
+                mvo.thumbnailImg = UIImage(data:imgData)
+                
              self.list.append(mvo)
                 
                 if(self.list.count >= totCnt){
@@ -75,7 +79,20 @@ class ListViewController:UITableViewController{
             
         }catch{}
     }
-    
+    //이미지 가져오는 소스 모듈화
+    func getThumnailImg(_ index: Int) -> UIImage {
+        let mvo = self.list[index]
+        
+        if let savedImg = mvo.thumbnailImg{
+             return savedImg
+        }else{
+            let url: URL! = URL(string: mvo.thumbnail!)
+            let imgData = try! Data(contentsOf: url)
+            mvo.thumbnailImg = UIImage(data: imgData)
+            
+            return mvo.thumbnailImg!
+        }
+    }
     
 //MARK:생성할 목록의 길이 반환
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -86,32 +103,7 @@ class ListViewController:UITableViewController{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         NSLog("cellForRowAt call")
         let row = self.list[indexPath.row]
-        
-        // return value type [UITableViewCell?]
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell")!
-
-        /*
-            Basic 및 subtitle
-            cell.textLabel?.text = row.title
-            cell.detailTextLabel?.text = row.description
-        */
-        
-        /*
-            CustomCell
-            //1. viewWithTag tag 값을 참조하여 UIView 객체 값을 가져오기
-            //2. UIview 객체로 가져와서 UILabel로 downCast
-            //3. ?(optional)을 통해 입력되지 않을 태그값을 호출하는 경우 대비
-            let title = cell.viewWithTag(101) as? UILabel
-            let desc = cell.viewWithTag(102) as? UILabel
-            let opendate = cell.viewWithTag(103) as? UILabel
-            let rating = cell.viewWithTag(104) as? UILabel
-            
-            
-            title?.text = row.title
-            desc?.text = row.description
-            opendate?.text = row.opendate
-            rating?.text = "\(row.rating!)"
-        */
+        NSLog("호출된 행번호 : \(indexPath.row), 제목:\(row.title!)")
         
         //UITableViewCell(MovieCell.swift)을 이용한 ListCell 할당
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell") as! MovieCell
@@ -120,17 +112,13 @@ class ListViewController:UITableViewController{
         cell.desc?.text = row.description
         cell.opendate?.text = row.opendate
         cell.rating?.text = "\(row.rating!)"
-//        cell.thumbnail.image = UIImage(named: row.thumbnail!)
+        //비동기로 이미지 가져오기 처리
+        DispatchQueue.main.async(execute: {
+            NSLog("비동기 방식으로 실행")
+            cell.thumbnail.image = self.getThumnailImg(indexPath.row)
+        })
         
-        //1. thumbnail 경로를 URL 객체로 생성
-        let url : URL! = URL(string: row.thumbnail!)
-        //2. img를 Data로 저장
-        let imgData = try! Data(contentsOf: url)
-        //3. UIImage에 대입
-        cell.thumbnail.image = UIImage(data:imgData)
-        //4. 한줄처리
-        //cell.thumbnail.image = UIImage(data:try! Data(contentsOf: URL(string: row.thumbnail!)!))
-        
+        NSLog("메소드 실행을 종료 셀을 리턴")
         
         return cell
     }

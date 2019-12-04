@@ -23,4 +23,6 @@ class MovieVO {
     
     var rating: Double?
     
+    var thumbnailImg: UIImage?
+    
 }
